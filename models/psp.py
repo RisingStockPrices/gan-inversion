@@ -9,6 +9,7 @@ import torch
 from torch import nn
 from models.encoders import psp_encoders
 from models.stylegan2.model import Generator
+from models.stylegan1.model import StyleGANGeneratorModel
 from configs.paths_config import model_paths
 
 
@@ -28,7 +29,7 @@ class pSp(nn.Module):
 		self.opts.n_styles = int(math.log(self.opts.output_size, 2)) * 2 - 2
 		# Define architecture
 		self.encoder = self.set_encoder()
-		self.decoder = Generator(self.opts.output_size, 512, 8)
+		self.decoder = StyleGANGeneratorModel() #Generator(self.opts.output_size, 512, 8)
 		self.face_pool = torch.nn.AdaptiveAvgPool2d((256, 256))
 		# Load weights if needed
 		self.load_weights()
@@ -60,6 +61,7 @@ class pSp(nn.Module):
 			self.encoder.load_state_dict(encoder_ckpt, strict=False)
 			print('Loading decoder weights from pretrained!')
 			ckpt = torch.load(self.opts.stylegan_weights)
+			import pdb;pdb.set_trace()
 			self.decoder.load_state_dict(ckpt['g_ema'], strict=False)
 			if self.opts.learn_in_w:
 				self.__load_latent_avg(ckpt, repeat=1)
