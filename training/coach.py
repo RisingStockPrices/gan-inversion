@@ -61,12 +61,12 @@ class Coach:
 		self.train_dataloader = DataLoader(self.train_dataset,
 										   batch_size=self.opts.batch_size,
 										   shuffle=True,
-										   num_workers=int(self.opts.workers),
+										   num_workers=0,#int(self.opts.workers),
 										   drop_last=True)
 		self.test_dataloader = DataLoader(self.test_dataset,
 										  batch_size=self.opts.test_batch_size,
 										  shuffle=False,
-										  num_workers=int(self.opts.test_workers),
+										  num_workers=0,#int(self.opts.test_workers),
 										  drop_last=True)
 
 		# Initialize logger

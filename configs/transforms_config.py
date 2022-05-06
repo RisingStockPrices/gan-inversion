@@ -17,21 +17,22 @@ class EncodeTransforms(TransformsConfig):
 
 	def __init__(self, opts):
 		super(EncodeTransforms, self).__init__(opts)
+		self.img_size = 256
 
 	def get_transforms(self):
 		transforms_dict = {
 			'transform_gt_train': transforms.Compose([
-				transforms.Resize((256, 256)),
+				transforms.Resize((self.img_size, self.img_size)),
 				transforms.RandomHorizontalFlip(0.5),
 				transforms.ToTensor(),
 				transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])]),
 			'transform_source': None,
 			'transform_test': transforms.Compose([
-				transforms.Resize((256, 256)),
+				transforms.Resize((self.img_size, self.img_size)),
 				transforms.ToTensor(),
 				transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])]),
 			'transform_inference': transforms.Compose([
-				transforms.Resize((256, 256)),
+				transforms.Resize((self.img_size, self.img_size)),
 				transforms.ToTensor(),
 				transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])])
 		}
@@ -96,23 +97,24 @@ class CPVtonTransforms(TransformsConfig):
 
 	def __init__(self, opts):
 		super(CPVtonTransforms, self).__init__(opts)
+		self.img_size = 128
 
 	def get_transforms(self):
 		transforms_dict = {
 			'transform_gt_train': transforms.Compose([
-				transforms.Resize((256, 256)),
+				transforms.Resize((self.img_size, self.img_size)),
 				transforms.ToTensor(),
 				transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])]),
 			'transform_source': transforms.Compose([
-				transforms.Resize((256, 256)),
+				transforms.Resize((self.img_size, self.img_size)),
 				augmentations.ToOneHot(self.opts.label_nc),
 				transforms.ToTensor()]),
 			'transform_test': transforms.Compose([
-				transforms.Resize((256, 256)),
+				transforms.Resize((self.img_size, self.img_size)),
 				transforms.ToTensor(),
 				transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])]),
 			'transform_inference': transforms.Compose([
-				transforms.Resize((256, 256)),
+				transforms.Resize((self.img_size, self.img_size)),
 				augmentations.ToOneHot(self.opts.label_nc),
 				transforms.ToTensor()])
 		}

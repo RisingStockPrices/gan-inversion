@@ -39,7 +39,7 @@ DATASETS = {
 		'test_target_root': dataset_paths['celeba_test'],
 	},
 	'cp_vton': {
-		'transforms': transforms_config.CPVtonTransforms,
+		'transforms': transforms_config.EncodeTransforms,
 		'train_source_root': dataset_paths['train_data'],
 		'train_target_root': dataset_paths['train_data'],
 		'test_source_root': dataset_paths['test_data'],

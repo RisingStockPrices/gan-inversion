@@ -6,8 +6,8 @@ dataset_paths = {
 	'celeba_train_segmentation': '',
 	'celeba_test_segmentation': '',
 	'ffhq': '',
-	'train_data': './cp-vton/train',
-	'test_data': './cp-vton/test',
+	'train_data': './data/viton10k', #c#'./cp-vton/train',
+	'test_data': './data/test',# cp-vton/test',
 }
 
 model_paths = {
@@ -19,5 +19,5 @@ model_paths = {
 	'mtcnn_onet': 'pretrained_models/mtcnn/onet.npy',
 	'shape_predictor': 'shape_predictor_68_face_landmarks.dat',
 	'moco': 'pretrained_models/moco_v2_800ep_pretrain.pth.tar',
-	'stylegan_vton': './pretrained_models/viton3k-004765_pytorch.pth',
+	'stylegan_vton': './pretrained_models/viton10k-005000.pkl_pytorch.pth' #weights-from-tomas'#./pretrained_models/viton3k-004765_pytorch.pth',
 }

@@ -1,6 +1,6 @@
 CUDA_VISIBLE_DEVICES=0 python scripts/train.py \
 --dataset_type=cp_vton \
---exp_dir=./bear9 \
+--exp_dir=./bear13 \
 --workers=8 \
 --batch_size=8 \
 --test_batch_size=8 \

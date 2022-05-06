@@ -250,11 +250,24 @@ class StyleGANGeneratorModel(nn.Module):
           pth_var_name = pth_var_name.replace('conv.weight', 'weight')
       self.pth_to_tf_var_mapping[pth_var_name] = tf_var_name
 
-  def forward(self, z):
-    w = self.mapping(z)
+  def mean_latent(self, n_latent):
+      latent_in = torch.randn(n_latent, self.w_space_dim)
+      pixelnorm = PixelNormLayer()
+      latent = pixelnorm(latent_in).mean(0, keepdim=True)
+      return latent
+
+  def forward(self, z, input_is_latent=False, randomize_noise=True, return_latents=False):
+    if not input_is_latent:
+      pixelnorm = PixelNormLayer()
+      z = torch.stack([pixelnorm(s) for s in z]) # 8, 12, 512
+    z = z[:,0,:] # not very sure
+    w = self.mapping(z) 
     w = self.truncation(w)
     x = self.synthesis(w)
-    return x
+    if return_latents:
+      return x, w
+    else:
+      return x
 
 
 class MappingModule(nn.Sequential):

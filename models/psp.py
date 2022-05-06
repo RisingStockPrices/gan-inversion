@@ -61,8 +61,7 @@ class pSp(nn.Module):
 			self.encoder.load_state_dict(encoder_ckpt, strict=False)
 			print('Loading decoder weights from pretrained!')
 			ckpt = torch.load(self.opts.stylegan_weights)
-			import pdb;pdb.set_trace()
-			self.decoder.load_state_dict(ckpt['g_ema'], strict=False)
+			self.decoder.load_state_dict(ckpt, strict=False)
 			if self.opts.learn_in_w:
 				self.__load_latent_avg(ckpt, repeat=1)
 			else:
@@ -70,10 +69,11 @@ class pSp(nn.Module):
 
 	def forward(self, x, resize=True, latent_mask=None, input_code=False, randomize_noise=True,
 	            inject_latent=None, return_latents=False, alpha=None):
+		# x: 8, 3, 128, 128
 		if input_code:
 			codes = x
 		else:
-			codes = self.encoder(x)
+			codes = self.encoder(x)# 8, 12, 512
 			# normalize with respect to the center of an average face
 			if self.opts.start_from_latent_avg:
 				if self.opts.learn_in_w:
@@ -93,7 +93,7 @@ class pSp(nn.Module):
 					codes[:, i] = 0
 
 		input_is_latent = not input_code
-		images, result_latent = self.decoder([codes],
+		images, result_latent = self.decoder(codes,
 		                                     input_is_latent=input_is_latent,
 		                                     randomize_noise=randomize_noise,
 		                                     return_latents=return_latents)
@@ -110,8 +110,10 @@ class pSp(nn.Module):
 		self.opts = opts
 
 	def __load_latent_avg(self, ckpt, repeat=None):
-		if 'latent_avg' in ckpt:
-			self.latent_avg = ckpt['latent_avg'].to(self.opts.device)
+		if 'truncation.w_avg' in ckpt:
+			self.latent_avg = ckpt['truncation.w_avg'].to(self.opts.device)
+		# if 'latent_avg' in ckpt:
+		# 	self.latent_avg = ckpt['latent_avg'].to(self.opts.device)
 			if repeat is not None:
 				self.latent_avg = self.latent_avg.repeat(repeat, 1)
 		else:

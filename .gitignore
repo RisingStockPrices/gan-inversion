@@ -3,3 +3,6 @@ git status
 __pycache__/
 cp-vton/
 pretrained_models/
+*.pyc
+data/
+*.zip
